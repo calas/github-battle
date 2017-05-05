@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { fetchPopularRepositories } from '../utils/api'
 
-function SelectLanguage (props) {
+const SelectLanguage = (props) => {
   const languages = ['All', 'Javascript', 'Ruby', 'Java', 'CSS', 'Python']
 
   return (
@@ -26,30 +26,37 @@ SelectLanguage.propTypes = {
   onSelect: PropTypes.func.isRequired
 }
 
-function RepoGrid (props) {
+const Repo = (props) => {
+  const repo = props.repo
+  return (
+    <li className='popular-item'>
+      <div className='popular-rank'>#{props.rank}</div>
+      <ul className='space-list-item'>
+        <li>
+          <img
+            className='avatar'
+            src={repo.owner.avatar_url}
+            alt={`Avatar for ${repo.owner.login}`}
+          />
+        </li>
+        <li>
+          <a href={repo.html_url}>{repo.name}</a>
+        </li>
+        <li>@{repo.owner.login}</li>
+        <li>{repo.stargazers_count} stars</li>
+      </ul>
+    </li>
+  )
+}
+
+const RepoGrid = (props) => {
+  const repos = props.repos.map((repo, index) => (
+    <Repo key={repo.id} repo={repo} rank={index + 1} />
+  ))
+
   return (
     <ul className='popular-list'>
-      {props.repos.map((repo, index) => {
-        return (
-          <li key={repo.id} className='popular-item'>
-            <div className='popular-rank'>#{index + 1}</div>
-            <ul className='space-list-item'>
-              <li>
-                <img
-                  className='avatar'
-                  src={repo.owner.avatar_url}
-                  alt={`Avatar for ${repo.owner.login}`}
-                />
-              </li>
-              <li>
-                <a href={repo.html_url}>{repo.name}</a>
-              </li>
-              <li>@{repo.owner.login}</li>
-              <li>{repo.stargazers_count} stars</li>
-            </ul>
-          </li>
-        )
-      })}
+      {repos}
     </ul>
   )
 }
