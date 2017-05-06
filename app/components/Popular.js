@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { fetchPopularRepositories } from '../utils/api'
+import Api from '../utils/api'
 
 const SelectLanguage = (props) => {
   const languages = ['All', 'Javascript', 'Ruby', 'Java', 'CSS', 'Python']
@@ -77,7 +77,7 @@ class Popular extends React.Component {
       repos: null
     })
 
-    fetchPopularRepositories(lang).then((repos) => {
+    Api.fetchPopularRepositories(lang).then((repos) => {
       this.setState({
         repos: repos
       })
